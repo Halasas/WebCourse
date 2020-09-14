@@ -7,15 +7,76 @@
     </head>
     <body>
         <header>
-            Портфолио
+            <nav>
+                <ul>
+                    <li><a href="#skills">Мои навыки</a></li>
+                    <li><a href="#projects">Мои цели</a></li>
+                </ul>
+            </nav>
         </header>
         <main>
+            <section id="skills">
+                <h1>Мои навыки</h1>   
+                <ul>
+                    <li>Пишу на C#, C++ и немножко Java</li>
+                    <li>Рисую и делаю дизайны</li>
+                    <li>Начинающий gamedev разработчик</li>
+                </ul>
+                <p>
+                    Это не все мои навыки, но мне лень думать...
+                </p>
+            </section>           
+            <section id="projects">
+                <h1>Мои цели</h1>
+                <ol>
+                    <li>Придумать 3 цели для этого списка</li>
+                    <li>Создать свою игру и заработать на ней 100$</li>
+                    <li>Создать другую игру и заработать на ней 100.000$ </li>
+                </ol>
+                <h3>Мой план</h3>
+                <dl>
+                    <dt>Стараться и изучать новое</dt>
+                    <dd>Без этого никак</dd>
+                    <dt>Находить единомышленников и изучать новое</dt>
+                    <dd>Без тоже этого никак</dd>
+                </dl>
+                <p><q>Историю пишут <i>победители,</i> а этот <i>крипер</i> явно проиграл</q> &copy; Я</p>
+            </section>
             <article>
-                
+                <pre>
+                    Я 
+                                НЕ
+                        НАШЕЛ 
+                    ASCII 
+                            ART
+                        С
+                                КТУЛХУ
+                                
+                    (╯°□°）╯︵ ┻━┻
+                </pre>
             </article>
+            <section id="code">
+                <pre><code>
+private void MoveHorizontal(float horizontal)
+{
+    spriteRenderer.flipX = horizontal &lt; 0;
+    rigidbody.AddForce(Vector2.right * 
+                    horizontal * 
+                    Speed * 
+                    (OnGround ? 1 : airControlMultiplier),
+        ForceMode2D.Impulse);
+}
+</code></pre>
+            </section>
         </main>
         <footer>
-            Copyright © 2020 lebiafan
+            <aside>
+                <ul>
+                    <li><a href="https://vk.com/id376659163">VK</a></li>
+                    <li><a href="https://t.me/halasas">Telegram</a></li>
+                </ul>
+            </aside>
+            <p>Copyright © <time datetime="2020--01-01 12:00">2020</time> lebiafan (Лебедев Илья)</p>
         </footer>
     </body>
 </html>
