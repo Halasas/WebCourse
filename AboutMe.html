@@ -16,10 +16,10 @@
             </nav>
         </header>
         <main>
-            <div id="skills"></div>
+            <h4 style="padding-top: 20px; text-align: center;">Моя цитата</h5>
+            <h5 style="text-align: center;"><q>Историю пишут <i>победители,</i> а этот <i>крипер</i> явно проиграл</q> &copy; Я <sup>lebiafan</sup></h5>
+            <div id="skills" class="navpoints"></div>
             <section>
-                <h4>Моя цитата</h5>
-                <h5><q>Историю пишут <i>победители,</i> а этот <i>крипер</i> явно проиграл</q> &copy; Я <sup>lebiafan</sup></h5>
                 <h1>Мои навыки</h1>   
                 <ul>
                     <li>Пишу на C#, C++ и немножко Java</li>
@@ -37,7 +37,7 @@
                     Это, наверное, не все мои навыки, но мне лень думать...
                 </p>
             </section>           
-            <div id="projects"></div>
+            <div id="projects" class="navpoints"></div>
             <section>
                 <h1>Мои цели</h1>
                 <ol>
@@ -67,20 +67,142 @@
                     (╯°□°）╯︵ ┻━┻
                 </pre>
             </article>
-            <div id="code"></div>
+            <div id="code" class="navpoints"></div>
             <section>
                 <h1>Мои Код</h1>
                 <p>Какой то рандомный кусок кода если честно...</p>
                 <pre><code>
-private void MoveHorizontal(float horizontal)
-{
-    spriteRenderer.flipX = horizontal &lt; 0;
-    rigidbody.AddForce(Vector2.right * 
-                    horizontal * 
-                    Speed * 
-                    (OnGround ? 1 : airControlMultiplier),
-        ForceMode2D.Impulse);
-}
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using UnityEngine;
+    
+    public class MoveController : MonoBehaviour
+    {
+        [SerializeField] private int Speed;
+        [SerializeField] private int JumpForce;
+        [SerializeField] private Transform feetPos;
+        [SerializeField] private Transform wallPosL;
+        [SerializeField] private Transform wallPosR;
+        [SerializeField] private Vector2 wallCheckerSize;
+        [SerializeField] private LayerMask layerMask;
+        [SerializeField] private float groundCheckRadius;
+        [SerializeField] private float airControlMultiplier;
+    
+        private Rigidbody2D rigidbody;
+        private Animator animator;
+        private SpriteRenderer spriteRenderer;
+    
+        private bool OnGround;
+        private bool Stealth;
+        private bool OnWallL;
+        private bool OnWallR;
+        private bool OnWall;
+        private enum WallSide { Left = 1, Right = -1 }
+        
+        void Start()
+        {
+            rigidbody = GetComponent&lt;Rigidbody2D();
+            animator = GetComponent&lt;Animator();
+            spriteRenderer = GetComponent&lt;SpriteRenderer();
+        }
+    
+        void FixedUpdate()
+        {
+            float horizontal = Input.GetAxisRaw("Horizontal");
+            float vertical = Input.GetAxisRaw("Vertical");
+            OnGround = Physics2D.OverlapCircle(feetPos.position, groundCheckRadius, layerMask);
+            OnWallL = Physics2D.OverlapBox(wallPosL.position, wallCheckerSize, 0.0f, layerMask);
+            OnWallR = Physics2D.OverlapBox(wallPosR.position, wallCheckerSize, 0.0f, layerMask);
+            OnWall = OnWallL || OnWallR;
+            Stealth = vertical &lt; 0;
+            
+            animator.SetBool("OnWall", OnWall);
+            animator.SetBool("OnGround", OnGround);
+            animator.SetBool("Stealth", Stealth);
+            animator.SetBool("IsRunning", Mathf.Abs(rigidbody.velocity.x) > 0);
+            animator.SetBool("IsMovingUp", rigidbody.velocity.y > 0);
+    
+            if (Mathf.Abs(horizontal) > 0 && !Stealth)
+            {
+                MoveHorizontal(horizontal);
+            }
+    
+            if (vertical > 0 && OnGround)
+            {
+                Jump();
+            }
+    
+            if (OnWall)
+            {
+                spriteRenderer.flipX = OnWallL;
+                if (vertical > 0 && !OnGround)
+                {
+                    WallJump(OnWallL ? WallSide.Left : WallSide.Right);
+                }
+                else
+                {
+                    rigidbody.velocity = GetCorrectedYVelocity();
+                }
+            }
+    
+            if (OnGround)
+            {
+                rigidbody.velocity = GetCorrectedXVelocity();
+            }
+            rigidbody.velocity = GetLimitedVelocity();
+        }
+    
+        private void MoveHorizontal(float horizontal)
+        {
+            spriteRenderer.flipX = horizontal &lt; 0;
+            rigidbody.AddForce(Vector2.right * 
+                                horizontal * 
+                                Speed * 
+                                (OnGround ? 1 : airControlMultiplier),
+                ForceMode2D.Impulse);
+        }
+    
+        private void Jump()
+        {
+            rigidbody.AddForce(Vector2.up * JumpForce, ForceMode2D.Impulse);
+        }
+    
+        private void WallJump(WallSide direction)
+        {
+            rigidbody.AddForce(new Vector2((int)direction * 0.5f, 0.3f) * JumpForce, ForceMode2D.Impulse);
+        }
+    
+        private Vector2 GetCorrectedXVelocity()
+        {
+            if (Stealth && Mathf.Abs(rigidbody.velocity.x) >= 1)
+            {
+                return new Vector2(rigidbody.velocity.x, rigidbody.velocity.y);
+            }
+            if (Mathf.Abs(rigidbody.velocity.x) >= 1)
+            {
+                return new Vector2(rigidbody.velocity.x / 1.1f, rigidbody.velocity.y);
+            }
+            return new Vector2(0, rigidbody.velocity.y);
+        }
+    
+        private Vector2 GetCorrectedYVelocity()
+        {
+            return new Vector2(rigidbody.velocity.x, rigidbody.velocity.y / 1.2f);
+        }
+    
+        private Vector2 GetLimitedVelocity()
+        {
+            return new Vector2(LimitVelocity(rigidbody.velocity.x, Speed),
+                LimitVelocity(rigidbody.velocity.y, 10));
+        }
+    
+        private float LimitVelocity(float speed, float limit)
+        {
+            return Math.Min(Math.Max(speed, -limit), limit);
+        }
+    }
+                    
 </code></pre>
             </section>
         </main>
@@ -88,6 +210,8 @@ private void MoveHorizontal(float horizontal)
                 <ul>
                     <li><a href="https://vk.com/id376659163">VK</a></li>
                     <li><a href="https://t.me/halasas">Telegram</a></li>
+                    <li><a href="https://github.com/Halasas/">GitHub</a></li>
+                    
                 </ul>
             <p>Copyright © <time datetime="2020--01-01 12:00">2020</time> lebiafan (Лебедев Илья)</p>
         </footer>
