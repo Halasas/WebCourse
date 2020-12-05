@@ -4,6 +4,7 @@
         <meta charset="utf-8" />
         <title>Лебедев Илья - M33021</title>
         <link rel="stylesheet" href="outlines.css" />
+        <link rel="stylesheet" href="popup.css" />
     </head>
     <body>
         <header>
@@ -13,7 +14,24 @@
                     <li><a href="#projects">&#9654 Мои цели</a></li>
                     <li><a href="#gallery">&#9654 Галерея</a></li>
                     <li><a href="#code">&#9654 Мой код</a></li>
+                    <li class="popup" onclick="Show('contactPopup')">&#9654 Контакты
+                        <div class="popuptext" id="contactPopup">   
+                            <ul>
+                                <li><a href="https://vk.com/id376659163" target="_blank">VK</a></li>
+                                <li><a href="https://t.me/halasas" target="_blank">Telegram</a></li>
+                                <li><a href="https://github.com/Halasas/" target="_blank">GitHub</a></li>
+                            </ul>  
+                        </div>
+                    </li>
                 </ul>
+
+                <script>
+                    function Show(name) {
+                        var popup = document.getElementById(name);
+                        console.log(popup) 
+                        popup.classList.toggle("show");
+                    }
+                </script>
             </nav>
         </header>
         <main>
@@ -21,7 +39,7 @@
             <div style="margin: 100px;"></div>
             <section class="sec">
                 <div>
-                    <img src="photo.jpg" alt="Avatar">
+                    <img src="Pictures/photo.jpg" alt="Avatar">
                     <h1>Мои навыки</h1>   
                     <ul>
                         <li>Пишу на <span class="highlighted">C#, C++</span> и немножко <span class="highlighted">Java</span></li>
@@ -41,10 +59,12 @@
 
                 </div>
             </section>    
-
             <div id="gallery" class="navpoints"></div>
+            <div class="fade">
+                <img src="" class="img_show" id="bigImg">
+            </div>
             <h2>Мне запомнились эти игры</h2>
-            <section style="display: flex; flex-wrap: wrap; justify-content:space-between;">
+            <section style="display: flex; flex-wrap: wrap; justify-content:center;" id="gallery_body">
                 <img src="Pictures/Firewatch.jpg" alt="apple" class="img_fit" >
                 <img src="Pictures/GhostRunner.jpg" alt="apple" class="img_fit">
                 <img src="Pictures/Soma.jpg" alt="apple" class="img_fit">
@@ -54,6 +74,7 @@
                 <img src="Pictures/r6.jpg" alt="apple" class="img_fit">
                 <img src="Pictures/bf4.jpg" alt="apple" class="img_fit">
             </section>
+            <script src="showImage.js"></script>
             <div id="projects" class="navpoints"></div>
             <section class="sec" style="clear: both;">
                 <div>
@@ -95,137 +116,12 @@ X. 9  `   '  P )X
                 </pre>
             </section>
             <div id="code" class="navpoints"></div>
-            <section>
+            <section class="sec">
                 <h1>Мои Код</h1>
                 <p>Какой то рандомный кусок кода если честно...</p>
                 <pre><code>
-    public class MoveController : MonoBehaviour
-    {
-        [SerializeField] private int Speed;
-        [SerializeField] private int JumpForce;
-        [SerializeField] private Transform feetPos;
-        [SerializeField] private Transform wallPosL;
-        [SerializeField] private Transform wallPosR;
-        [SerializeField] private Vector2 wallCheckerSize;
-        [SerializeField] private LayerMask layerMask;
-        [SerializeField] private float groundCheckRadius;
-        [SerializeField] private float airControlMultiplier;
-    
-        private Rigidbody2D rigidbody;
-        private Animator animator;
-        private SpriteRenderer spriteRenderer;
-    
-        private bool OnGround;
-        private bool Stealth;
-        private bool OnWallL;
-        private bool OnWallR;
-        private bool OnWall;
-        private enum WallSide { Left = 1, Right = -1 }
-        
-        void Start()
-        {
-            rigidbody = GetComponent&lt;Rigidbody2D();
-            animator = GetComponent&lt;Animator();
-            spriteRenderer = GetComponent&lt;SpriteRenderer();
-        }
-    
-        void FixedUpdate()
-        {
-            float horizontal = Input.GetAxisRaw("Horizontal");
-            float vertical = Input.GetAxisRaw("Vertical");
-            OnGround = Physics2D.OverlapCircle(feetPos.position, groundCheckRadius, layerMask);
-            OnWallL = Physics2D.OverlapBox(wallPosL.position, wallCheckerSize, 0.0f, layerMask);
-            OnWallR = Physics2D.OverlapBox(wallPosR.position, wallCheckerSize, 0.0f, layerMask);
-            OnWall = OnWallL || OnWallR;
-            Stealth = vertical &lt; 0;
-            
-            animator.SetBool("OnWall", OnWall);
-            animator.SetBool("OnGround", OnGround);
-            animator.SetBool("Stealth", Stealth);
-            animator.SetBool("IsRunning", Mathf.Abs(rigidbody.velocity.x) > 0);
-            animator.SetBool("IsMovingUp", rigidbody.velocity.y > 0);
-    
-            if (Mathf.Abs(horizontal) > 0 && !Stealth)
-            {
-                MoveHorizontal(horizontal);
-            }
-    
-            if (vertical > 0 && OnGround)
-            {
-                Jump();
-            }
-    
-            if (OnWall)
-            {
-                spriteRenderer.flipX = OnWallL;
-                if (vertical > 0 && !OnGround)
-                {
-                    WallJump(OnWallL ? WallSide.Left : WallSide.Right);
-                }
-                else
-                {
-                    rigidbody.velocity = GetCorrectedYVelocity();
-                }
-            }
-    
-            if (OnGround)
-            {
-                rigidbody.velocity = GetCorrectedXVelocity();
-            }
-            rigidbody.velocity = GetLimitedVelocity();
-        }
-    
-        private void MoveHorizontal(float horizontal)
-        {
-            spriteRenderer.flipX = horizontal &lt; 0;
-            rigidbody.AddForce(Vector2.right * 
-                                horizontal * 
-                                Speed * 
-                                (OnGround ? 1 : airControlMultiplier),
-                ForceMode2D.Impulse);
-        }
-    
-        private void Jump()
-        {
-            rigidbody.AddForce(Vector2.up * JumpForce, ForceMode2D.Impulse);
-        }
-    
-        private void WallJump(WallSide direction)
-        {
-            rigidbody.AddForce(new Vector2((int)direction * 0.5f, 0.3f) * JumpForce, ForceMode2D.Impulse);
-        }
-    
-        private Vector2 GetCorrectedXVelocity()
-        {
-            if (Stealth && Mathf.Abs(rigidbody.velocity.x) >= 1)
-            {
-                return new Vector2(rigidbody.velocity.x, rigidbody.velocity.y);
-            }
-            if (Mathf.Abs(rigidbody.velocity.x) >= 1)
-            {
-                return new Vector2(rigidbody.velocity.x / 1.1f, rigidbody.velocity.y);
-            }
-            return new Vector2(0, rigidbody.velocity.y);
-        }
-    
-        private Vector2 GetCorrectedYVelocity()
-        {
-            return new Vector2(rigidbody.velocity.x, rigidbody.velocity.y / 1.2f);
-        }
-    
-        private Vector2 GetLimitedVelocity()
-        {
-            return new Vector2(LimitVelocity(rigidbody.velocity.x, Speed),
-                LimitVelocity(rigidbody.velocity.y, 10));
-        }
-    
-        private float LimitVelocity(float speed, float limit)
-        {
-            return Math.Min(Math.Max(speed, -limit), limit);
-        }
-    }
-                    
-</code></pre>
+                    printf(hello);
+                </code></pre>
             </section>
         </main>
         <footer>
@@ -238,3 +134,4 @@ X. 9  `   '  P )X
         </footer>
     </body>
 </html>
+<script src="array_task.js"></script>
