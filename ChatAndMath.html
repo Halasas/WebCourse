@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="utf-8" />
+        <title>Чат с рандомом</title>
+        <link rel="stylesheet" href="chat.css" />
+    </head>
+    <body>
+        <header style="color:#e2d3d3; text-align: center;padding: 5px; box-sizing: border-box;">
+            Чат c рандомом
+        </header>
+        <div id="chat-box" class="chat-box"> 
+   
+
+        </div>
+        <div id="input-message-container" class="input-message-container"> 
+            <div class="inner-message-container"> 
+                <input id="inputTextField"type="text" class="input-text">
+                <button type="button" class="send-button" onclick="SendMessage()"><b>Send</b></button>
+            </div>
+        </div>
+    </body>
+    <template id="tmplMessageIncom">
+        <div class="message incoming">
+            <p id="message-text" class="message-text">Sample text
+            </p>
+            <button type="button" class="delete-button" onClick="DeleteMessage(this)">x</button>
+            <p class="message-time"> 
+                10:55
+            </p>
+        </div>    
+    </template>    
+    <template id="tmplMessageOut">
+        <div class="message outgoing">
+            <p class="message-text">Sample text
+            </p>
+            <button type="button" class="delete-button" onClick="DeleteMessage(this)">x</button>
+            <p class="message-time"> 
+                10:55
+            </p>
+        </div>    
+    </template> 
+    <script src="chat.js"></script>
+</html>

@@ -1,0 +1,107 @@
+.chat-box {
+    box-sizing: border-box;
+    position: absolute;
+    width: 40%;
+    left: 50%;
+    min-height: 90%;
+    transform: translate(-50%, 0%);
+    color: white;
+    background-color: rgb(82, 62, 62);
+}
+
+.input-message-container {
+    box-sizing: border-box;
+    z-index: 1;
+    position: fixed;
+    left: 50%;
+    bottom: 0%;
+    transform: translate(-50%, 0%);
+    width: 41%;
+    height: 10%;
+    background-color: rgb(43, 10, 10);
+}
+
+.message {
+    position: relative;
+    box-sizing: border-box;
+    word-wrap: break-word;
+    background-color:  rgb(187, 76, 76);
+    border-radius: 5px;
+    width: 80%;
+    height: fit-content;
+    min-height: 2em;
+    margin: 2% 0%;
+    padding: 1%;
+}
+.outgoing {
+    background-color: rgb(163, 69, 69);
+    float: right;
+}
+.incoming {
+    float: left;
+}
+.message-text {
+ margin: 0%;
+}
+.message-time {
+    margin: 0;
+    text-align: end;
+    color: rgb(219, 159, 159);
+    font-size: 75%;
+}
+
+.inner-message-container {
+    position: relative;
+    top:10%;
+    height: 80%;
+    display: flex; 
+    flex-wrap: nowrap;
+    justify-content:space-around;
+    align-items: center;
+    background-color: rgb(119, 45, 45);
+}
+
+.send-button{
+    position: relative;
+    padding: 0;
+    border: 0;
+    margin: 2%;
+    width: 10%;
+    height: 3em;
+    font-family: inherit;
+    outline:none;
+}
+
+.input-text {
+ 
+    position: relative;
+    width: 100%;
+    margin: 2%;
+    height: 2.5em;
+}
+
+.delete-button {
+    position: absolute;
+    transform: translate(30%, -30%);
+    right: 0;
+    top: 0;
+    border-radius: 20px;
+    outline:none;
+}
+
+body {
+    font-family: Calibri;
+    font-size: 110%;
+    background-color: rgb(43, 10, 10);
+}
+
+header {
+    top: 0;
+    left: 0;
+    position: fixed;
+    border-radius: 5px;
+    height: 5%;
+    width: 100%;
+    z-index: 1;
+    background-color:  rgb(83, 24, 24);
+}
