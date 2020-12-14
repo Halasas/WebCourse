@@ -93,6 +93,9 @@ body {
     font-family: Calibri;
     font-size: 110%;
     background-color: rgb(43, 10, 10);
+    background-image: url("Pictures/lines1.svg");
+    background-size: 500px;
+    background-repeat: repeat;
 }
 
 header {

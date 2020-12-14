@@ -1,10 +1,12 @@
 var chatbox = document.getElementById("chat-box");
 var inputcontainer = document.getElementById("input-message-container");
-var nouns = ["голубь","мешок","носок","пингвин","порошок","гвоздь","налог","выход", "бургер"];
-var verbs = ["булькает","отсвечивает","тронулся","вайбит","останавливает время","дёргается","идёт за энергосом","делает эйс"];
+var nouns = ["голубь","мешок","носок","пингвин","порошок","гвоздь","слон","выход", "бургер"];
+var verbs = ["булькает","отсвечивает","тронулся","просто стоит","останавливает время","дёргается","идёт за энергосом","делает эйс"];
 var adjectives = ["Золотой","Сумасшедший","Звёздный","Свинцовый","Мясной","Крабовый","Кожаный","Бродячий"];
 
 chatbox.style = "padding: 4% 1% " + (inputcontainer.clientHeight + 20) + "px";
+
+AddMessage("Hi", "outgoing");
 
 function AddMessage(text, type) {
     var message = document.createElement("div");
